@@ -1,0 +1,11 @@
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\bin\Debug\net10.0\EduGraphScheduler.Domain.deps.json
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\bin\Debug\net10.0\EduGraphScheduler.Domain.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\bin\Debug\net10.0\EduGraphScheduler.Domain.pdb
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.AssemblyInfoInputs.cache
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.AssemblyInfo.cs
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\refint\EduGraphScheduler.Domain.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\EduGraphScheduler.Domain.pdb
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Domain\obj\Debug\net10.0\ref\EduGraphScheduler.Domain.dll

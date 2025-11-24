@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-EduGraphScheduler.Worker-c09e863a-9346-4243-a265-8c8799eacdf1</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.8.14" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EduGraphScheduler.Application\EduGraphScheduler.Application.csproj" />
+    <ProjectReference Include="..\EduGraphScheduler.Infrastructure\EduGraphScheduler.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

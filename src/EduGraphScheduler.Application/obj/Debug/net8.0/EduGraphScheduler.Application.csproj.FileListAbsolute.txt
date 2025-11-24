@@ -1,0 +1,15 @@
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\bin\Debug\net8.0\EduGraphScheduler.Application.deps.json
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\bin\Debug\net8.0\EduGraphScheduler.Application.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\bin\Debug\net8.0\EduGraphScheduler.Application.pdb
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\bin\Debug\net8.0\EduGraphScheduler.Domain.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\bin\Debug\net8.0\EduGraphScheduler.Domain.pdb
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.csproj.AssemblyReference.cache
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.AssemblyInfoInputs.cache
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.AssemblyInfo.cs
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.csproj.CoreCompileInputs.cache
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraph.2621BD98.Up2Date
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\refint\EduGraphScheduler.Application.dll
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\EduGraphScheduler.Application.pdb
+C:\Users\Marestoni\Documents\Desafio\EduGraphScheduler\src\EduGraphScheduler.Application\obj\Debug\net8.0\ref\EduGraphScheduler.Application.dll

@@ -1,0 +1,359 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.API\\EduGraphScheduler.API.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.API\\EduGraphScheduler.API.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.API\\EduGraphScheduler.API.csproj",
+        "projectName": "EduGraphScheduler.API",
+        "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.API\\EduGraphScheduler.API.csproj",
+        "packagesPath": "C:\\Users\\Marestoni\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.API\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Marestoni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj": {
+                "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj"
+              },
+              "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\EduGraphScheduler.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\EduGraphScheduler.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hangfire.AspNetCore": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj",
+        "projectName": "EduGraphScheduler.Application",
+        "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj",
+        "packagesPath": "C:\\Users\\Marestoni\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Marestoni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj": {
+                "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.15.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.15.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj",
+        "projectName": "EduGraphScheduler.Domain",
+        "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj",
+        "packagesPath": "C:\\Users\\Marestoni\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Marestoni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\EduGraphScheduler.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\EduGraphScheduler.Infrastructure.csproj",
+        "projectName": "EduGraphScheduler.Infrastructure",
+        "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\EduGraphScheduler.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Marestoni\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Marestoni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj": {
+                "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Application\\EduGraphScheduler.Application.csproj"
+              },
+              "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj": {
+                "projectPath": "C:\\Users\\Marestoni\\Documents\\Desafio\\EduGraphScheduler\\src\\EduGraphScheduler.Domain\\EduGraphScheduler.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "10.0.100"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Azure.Identity": {
+              "target": "Package",
+              "version": "[1.12.0, )"
+            },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
+            "Microsoft.Graph": {
+              "target": "Package",
+              "version": "[5.54.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

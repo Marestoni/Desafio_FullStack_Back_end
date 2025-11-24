@@ -1,0 +1,6 @@
+@EduGraphScheduler.API_HostAddress = http://localhost:5105
+
+GET {{EduGraphScheduler.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
