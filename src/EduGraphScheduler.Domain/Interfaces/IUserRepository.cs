@@ -9,4 +9,5 @@ public interface IUserRepository : IRepository<User>
     Task<User?> GetUserWithEventsAsync(Guid userId);
     Task<bool> UserExistsAsync(string microsoftGraphId);
     Task BulkUpsertAsync(IEnumerable<User> users);
+    Task<IEnumerable<User>> GetUsersWhoHaveEventsAsync();
 }

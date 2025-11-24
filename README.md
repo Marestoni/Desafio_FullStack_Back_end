@@ -1,209 +1,238 @@
-📚 EduGraph Scheduler — Backend API
+📚 EduGraph Scheduler - Backend API
+🎯 Sobre o Projeto
+API backend desenvolvida em .NET 8 para gerenciamento de usuários e eventos acadêmicos de instituições de ensino, com integração completa ao Microsoft Graph e processamento assíncrono com Hangfire.
 
-API backend desenvolvida em .NET 8 para gerenciamento de usuários e eventos acadêmicos, com integração ao Microsoft Graph e processamento assíncrono com Hangfire.
+⚡ Funcionalidades Principais
+👥 Gestão de Usuários
+Listagem completa de 253.207+ usuários
 
-🚀 Tecnologias Utilizadas
+Busca e filtros por nome, email e departamento
 
-.NET 8 (ASP.NET Core)
+Paginação otimizada para alta volumetria
 
-Entity Framework Core (ORM)
+Detalhes completos do usuário
 
-SQL Server / LocalDB
+📅 Gestão de Eventos
+Visualização de agendas individuais
 
-JWT Bearer Authentication
+Sincronização inteligente com Microsoft Graph
 
-Microsoft Graph API
+Verificação prévia de existência de eventos
 
-Hangfire (jobs e sincronização)
+Atualização em background
 
-xUnit (testes unitários)
+🔄 Sincronização Automática
+Jobs recorrentes via Hangfire (a cada 6 horas)
 
-Swagger / OpenAPI (documentação)
+Processamento inteligente - só sincroniza usuários com eventos
 
-📌 Pré-requisitos
+Rate limiting automático para Microsoft Graph
 
-Instale antes de começar:
+Sincronização manual via endpoints da API
 
-.NET 8 SDK
+🔐 Segurança
+Autenticação JWT Bearer
 
-SQL Server Express ou LocalDB
+Ambiente protegido para dados confidenciais
 
-Visual Studio 2022+
- ou VS Code
+CORS configurado para frontend
 
-🛠️ Instalação e Setup do Projeto
-1️⃣ Clonar o repositório
-git clone <url-do-repositorio>
-cd EduGraphScheduler
+Validação de tokens
 
-2️⃣ Restaurar pacotes NuGet
-dotnet restore
+🏗️ Arquitetura
+EduGraphScheduler/
+├── src/
+│ ├── EduGraphScheduler.API/
+│ ├── EduGraphScheduler.Application/
+│ ├── EduGraphScheduler.Domain/
+│ ├── EduGraphScheduler.Infrastructure/
+│ ├── EduGraphScheduler.Worker/ 
+  └── EduGraphScheduler.Tests/ 
 
-3️⃣ Configurar o banco de dados
-Opção A — SQL Server LocalDB (recomendado)
+🛠️ Tecnologias Utilizadas
+.NET 8 - ASP.NET Core Web API
 
-Verifique as instâncias instaladas:
+Entity Framework Core - ORM com SQL Server
 
-sqllocaldb info
+Microsoft Graph SDK - Integração com Office 365
 
+Hangfire - Agendamento de jobs em background
 
-Inicie a instância:
+JWT Bearer Authentication - Autenticação segura
 
-sqllocaldb start MSSQLLocalDB
+Swagger/OpenAPI - Documentação interativa
 
-Opção B — SQL Server Express
+xUnit - Testes unitários
 
-Atualize sua connection string no arquivo:
-src/EduGraphScheduler.API/appsettings.json
+Azure Identity - Autenticação com Azure AD
 
-4️⃣ Aplicar as migrations
-cd src/EduGraphScheduler.Infrastructure
-dotnet ef database update --startup-project ../EduGraphScheduler.API
-
-5️⃣ Configurar Microsoft Graph
-
-No arquivo src/EduGraphScheduler.API/appsettings.json:
-
-"MicrosoftGraph": {
-  "ClientId": "",
-  "ClientSecret": "",
-  "TenantId": "",
-  "Scope": "https://graph.microsoft.com/.default"
+📦 Estrutura do Projeto
+Camadas da Aplicação
+Camada	Responsabilidade
+API	Controllers, Middleware, Configuração
+Application	Casos de uso, Serviços, DTOs
+Domain	Entidades, Regras de negócio
+Infrastructure	EF Core, Repositórios, Serviços externos
+Entidades Principais
+csharp
+public class User
+{
+    public Guid Id { get; set; }
+    public string MicrosoftGraphId { get; set; }
+    public string DisplayName { get; set; }
+    public string UserPrincipalName { get; set; }
+    public DateTime? LastSyncedAt { get; set; }
+    public int EventCount { get; set; }
+    public DateTime? LastEventCheckAt { get; set; }
 }
 
+public class CalendarEvent
+{
+    public Guid Id { get; set; }
+    public string MicrosoftGraphEventId { get; set; }
+    public string Subject { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
+    public Guid UserId { get; set; }
+    public User User { get; set; }
+}
+🚀 Configuração e Instalação
+Pré-requisitos
+.NET 8 SDK
 
-⚠️ Nunca exponha secrets em um repositório público.
-Coloque-os em variáveis de ambiente ou User Secrets.
+SQL Server 2019+ (LocalDB, Express ou Full)
 
-▶️ Executando a Aplicação
-Ambiente de desenvolvimento
+Conta Azure AD com permissões Microsoft Graph
+
+1. Clone o repositório
+bash
+git clone https://github.com/Marestoni/Desafio_FullStack_Back_end.git
+cd edugraph-scheduler
+2. Restaure as dependências
+bash
+dotnet restore
+3. Configure o banco de dados
+Opção A - LocalDB (Desenvolvimento)
+
+bash
+sqllocaldb start MSSQLLocalDB
+cd src/EduGraphScheduler.Infrastructure
+dotnet ef database update --startup-project ../EduGraphScheduler.API
+Opção B - SQL Server
+Atualize a connection string em appsettings.json:
+
+json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=EduGraphScheduler;Trusted_Connection=true;TrustServerCertificate=true;"
+  }
+}
+4. Configure o Microsoft Graph
+Edite src/EduGraphScheduler.API/appsettings.json:
+
+json
+{
+  "MicrosoftGraph": {
+    "ClientId": "SEU CLIENTE ID",
+    "ClientSecret": "SEU CLIENTE SECRET",
+    "TenantId": "SEU TENANT ID",
+    "Scope": "https://graph.microsoft.com/.default"
+  },
+  "JwtSettings": {
+    "Secret": "sua-chave-secreta-super-segura-aqui",
+    "Issuer": "EduGraphScheduler",
+    "Audience": "EduGraphUsers",
+    "ExpiresInMinutes": 60
+  }
+}
+5. Execute a aplicação
+bash
 cd src/EduGraphScheduler.API
 dotnet run
+A API estará disponível em:
 
+API: https://localhost:5000
 
-A API ficará disponível em:
+Swagger UI: https://localhost:5000/swagger
 
-Swagger UI: http://localhost:5000/swagger
+Hangfire Dashboard: https://localhost:5000/hangfire
 
-API Base: http://localhost:5000/api
+📡 Endpoints da API
+🔐 Autenticação
+Método	Endpoint	Descrição
+POST	/api/auth/login	Autenticar usuário
+POST	/api/auth/register	Registrar novo usuário
+POST	/api/auth/validate	Validar token JWT
+👥 Usuários
+Método	Endpoint	Descrição
+GET	/api/users	Listar todos os usuários
+GET	/api/users/{id}	Obter usuário por ID
+GET	/api/users/search?query=...	Buscar usuários
+📅 Eventos
+Método	Endpoint	Descrição
+GET	/api/events/user/{userId}	Obter eventos do usuário
+POST	/api/events/sync/user/{userId}	Sincronizar eventos do usuário
+POST	/api/events/sync/all	Sincronizar todos os eventos
+🔄 Sincronização
+Método	Endpoint	Descrição
+POST	/api/sync/start	Iniciar sincronização completa
+POST	/api/sync/users	Sincronizar apenas usuários
+POST	/api/sync/schedule	Agendar sincronização recorrente
+🔧 Configuração Avançada
+Hangfire Jobs
+Jobs recorrentes configurados automaticamente:
 
-Produção
-dotnet publish -c Release -o ./publish
-cd publish
-dotnet EduGraphScheduler.API.dll
+sync-users-recurring: Sincroniza usuários a cada 6 horas
 
+sync-events-recurring: Sincroniza eventos a cada 12 horas
+
+maintenance-cleanup: Limpeza diária à meia-noite
+
+Microsoft Graph Integration
+csharp
+public class MicrosoftGraphService : IMicrosoftGraphService
+{
+    public async Task<IEnumerable<MicrosoftGraphUser>> GetUsersAsync()
+    public async Task<IEnumerable<MicrosoftGraphEvent>> GetUserEventsAsync(string userPrincipalName)
+    public async Task<bool> UserHasEventsAsync(string userPrincipalName) // Verificação inteligente
+}
+Sincronização Inteligente
+csharp
+public async Task SyncAllUsersEventsAsync()
+{
+    // Verifica primeiro se o usuário tem eventos
+    var hasEvents = await _microsoftGraphService.UserHasEventsAsync(userPrincipalName);
+    if (hasEvents)
+    {
+        await SyncUserEventsAsync(userId); // Só sincroniza se tiver eventos
+    }
+}
 🧪 Executando Testes
-Todos os testes
+bash
+# Executar todos os testes
 dotnet test
 
-Com detalhes
+# Executar testes com detalhes
 dotnet test --verbosity normal
 
-Testes da pasta Tests
+# Executar testes específicos
 cd src/EduGraphScheduler.Tests
 dotnet test
 
-Com cobertura
+# Testes com cobertura de código
 dotnet test --collect:"XPlat Code Coverage"
-
-📁 Estrutura do Projeto
-EduGraphScheduler/
-├── src/
-│   ├── EduGraphScheduler.API/           # Camada de Apresentação (Controllers)
-│   ├── EduGraphScheduler.Application/   # Casos de uso / serviços / DTOs
-│   ├── EduGraphScheduler.Domain/        # Entidades, interfaces e regras de negócio
-│   ├── EduGraphScheduler.Infrastructure/# EF Core, repositórios, migrations
-│   ├── EduGraphScheduler.Worker/        # Serviços em background (Hangfire)
-│   └── EduGraphScheduler.Tests/         # Testes unitários
-└── README.md
-
-🔐 Autenticação (JWT)
-Fluxo:
-
-Registrar usuário
-
-Fazer login
-
-Utilizar Bearer token nos endpoints protegidos
-
-Exemplos
-Registrar
-curl -X POST "http://localhost:5000/api/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"testuser","email":"test@edu.com","password":"password123","displayName":"Test User"}'
-
-Login
-curl -X POST "http://localhost:5000/api/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{"username":"testuser","password":"password123"}'
-
-Acessar endpoint protegido
-curl -X GET "http://localhost:5000/api/users" \
-  -H "Authorization: Bearer {token}"
-
-📡 Endpoints Principais
-🔹 Autenticação
-
-POST /api/auth/register
-
-POST /api/auth/login
-
-POST /api/auth/validate
-
-🔹 Usuários
-
-GET /api/users
-
-GET /api/users/{id}
-
-POST /api/users/sync
-
-🔹 Eventos
-
-GET /api/events/user/{userId}
-
-POST /api/events/sync/user/{userId}
-
-POST /api/events/sync/all
-
-🔹 Sincronização Geral
-
-POST /api/sync/start
-
-POST /api/sync/schedule
-
-POST /api/sync/users
-
-🔄 Sincronização Microsoft Graph
-
-Ocorrência automática: A cada 6 horas (configurável)
-
-Executada via Hangfire
-
-Sincronização manual disponível via API
-
-📍 Dashboard Hangfire (dev): /hangfire
-
-🗄️ Migrations
-
-Criar migration:
-
+📊 Migrations
+bash
+# Criar nova migration
 dotnet ef migrations add NomeDaMigration --startup-project ../EduGraphScheduler.API
 
-
-Aplicar:
-
+# Aplicar migrations
 dotnet ef database update --startup-project ../EduGraphScheduler.API
 
-
-Remover:
-
+# Remover última migration
 dotnet ef migrations remove --startup-project ../EduGraphScheduler.API
-
 🐳 Docker (Opcional)
-
-Build da imagem:
-
+dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
@@ -227,33 +256,50 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "EduGraphScheduler.API.dll"]
+🔍 Monitoramento
+Hangfire Dashboard
+Acesse /hangfire para monitorar jobs em execução:
 
-🩺 Solução de Problemas (FAQ)
-❗ Erro: Conexão com SQL Server
+Status dos jobs recorrentes
 
-Certifique-se de que o LocalDB está ativo:
+Histórico de execuções
 
+Logs de erro
+
+Estatísticas de performance
+
+
+🚨 Solução de Problemas
+Erro: "Cannot connect to SQL Server"
+bash
+# Iniciar LocalDB
 sqllocaldb start MSSQLLocalDB
 
-❗ Erro em migrations
+# Verificar instâncias
+sqllocaldb info
+Erro: "Microsoft Graph authentication failed"
+Verifique ClientId, ClientSecret e TenantId
 
-Execute:
+Confirme as permissões no Azure AD
 
-dotnet ef database drop
-dotnet ef database update
+Valide o scope "https://graph.microsoft.com/.default"
 
-❗ JWT inválido
+Erro: "JWT token invalid"
+Verifique o secret no JwtSettings
 
-Verifique o secret no appsettings.json
+Confirme issuer e audience
 
-❗ Erro Microsoft Graph
+Valide o tempo de expiração
 
-Verifique:
+Rate Limiting do Microsoft Graph
+A aplicação inclui tratamento automático para rate limits:
 
-ClientId
+Pausas entre requisições
 
-ClientSecret
+Retry automático
 
-TenantId
+Processamento em lotes
 
-Permissões no Azure AD
+📞 Suporte
+Desenvolvedor: André Marestoni
+Email: m.marestoni@gmail.com

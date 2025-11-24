@@ -5,6 +5,7 @@ public interface IMicrosoftGraphService
     Task<IEnumerable<MicrosoftGraphUser>> GetUsersAsync();
     Task<IEnumerable<MicrosoftGraphEvent>> GetUserEventsAsync(string userPrincipalName);
     Task<string> GetAccessTokenAsync();
+    Task<bool> UserHasEventsAsync(string userPrincipalName);
 }
 
 public class MicrosoftGraphUser

@@ -37,8 +37,13 @@ public class User
     [MaxLength(100)]
     public string OfficeLocation { get; set; } = string.Empty;
 
+    [MaxLength(200)]
+    public string PasswordHash { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastSyncedAt { get; set; } = DateTime.UtcNow;
+    public int EventCount { get; set; }
+    public DateTime? LastEventCheckAt { get; set; }
 
     // Navigation property
     public virtual ICollection<CalendarEvent> CalendarEvents { get; set; } = new List<CalendarEvent>();

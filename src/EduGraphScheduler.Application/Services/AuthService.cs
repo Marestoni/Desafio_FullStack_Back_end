@@ -15,14 +15,17 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
+    private readonly IPasswordHasher _passwordHasher;
     private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
         IConfiguration configuration,
         ILogger<AuthService> logger)
     {
         _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
         _configuration = configuration;
         _logger = logger;
     }
@@ -31,9 +34,23 @@ public class AuthService : IAuthService
     {
         _logger.LogInformation("Login attempt for user: {Username}", request.Username);
 
-        // Em uma aplicação real, aqui você validaria contra um sistema de autenticação
-        // Por enquanto, vamos criar um usuário mock para demonstração
-        var user = await CreateOrGetMockUserAsync(request.Username);
+        // Buscar usuário pelo username (UserPrincipalName)
+        var user = await _userRepository.GetByMicrosoftGraphIdAsync(request.Username);
+
+        if (user == null || string.IsNullOrEmpty(user.PasswordHash))
+        {
+            _logger.LogWarning("Login failed: User {Username} not found", request.Username);
+            throw new UnauthorizedAccessException("Credenciais inválidas");
+        }
+
+        // Verificar senha
+        if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+        {
+            _logger.LogWarning("Login failed: Invalid password for user {Username}", request.Username);
+            throw new UnauthorizedAccessException("Credenciais inválidas");
+        }
+
+        _logger.LogInformation("Login successful for user: {Username}", request.Username);
 
         var token = GenerateJwtToken(user.UserPrincipalName, user.Mail);
         var expires = DateTime.UtcNow.AddMinutes(GetJwtExpiryMinutes());
@@ -61,8 +78,11 @@ public class AuthService : IAuthService
         var existingUser = await _userRepository.GetByMicrosoftGraphIdAsync(request.Username);
         if (existingUser != null)
         {
-            throw new ArgumentException("User already exists");
+            throw new ArgumentException("Usuário já existe");
         }
+
+        // Criar hash da senha
+        var passwordHash = _passwordHasher.HashPassword(request.Password);
 
         // Criar novo usuário
         var newUser = new User
@@ -72,11 +92,14 @@ public class AuthService : IAuthService
             DisplayName = request.DisplayName,
             Mail = request.Email,
             UserPrincipalName = request.Username,
+            PasswordHash = passwordHash,
             CreatedAt = DateTime.UtcNow,
             LastSyncedAt = DateTime.UtcNow
         };
 
         await _userRepository.AddAsync(newUser);
+
+        _logger.LogInformation("User {Username} registered successfully", request.Username);
 
         var token = GenerateJwtToken(newUser.UserPrincipalName, newUser.Mail);
         var expires = DateTime.UtcNow.AddMinutes(GetJwtExpiryMinutes());

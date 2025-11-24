@@ -1,9 +1,11 @@
 ﻿using Azure.Identity;
 using EduGraphScheduler.Application;
 using EduGraphScheduler.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
+using System.Net;
 
 namespace EduGraphScheduler.Infrastructure.Services;
 
@@ -11,10 +13,12 @@ public class MicrosoftGraphService : IMicrosoftGraphService
 {
     private readonly MicrosoftGraphSettings _settings;
     private GraphServiceClient? _graphClient;
+    private readonly ILogger<MicrosoftGraphService> _logger;
 
-    public MicrosoftGraphService(IOptions<MicrosoftGraphSettings> settings)
+    public MicrosoftGraphService(IOptions<MicrosoftGraphSettings> settings, ILogger<MicrosoftGraphService> logger)
     {
         _settings = settings.Value;
+        _logger = logger;
     }
 
     private GraphServiceClient GetGraphServiceClient()
@@ -87,7 +91,6 @@ public class MicrosoftGraphService : IMicrosoftGraphService
                     });
                 }
 
-                // Handle pagination
                 var pageIterator = PageIterator<User, UserCollectionResponse>
                     .CreatePageIterator(graphClient, result, (user) =>
                     {
@@ -111,8 +114,7 @@ public class MicrosoftGraphService : IMicrosoftGraphService
         }
         catch (Exception ex)
         {
-            // Log exception here
-            Console.WriteLine($"Error fetching users from Microsoft Graph: {ex.Message}");
+            _logger.LogError(ex, "Error fetching users from Microsoft Graph");
             throw;
         }
 
@@ -155,7 +157,6 @@ public class MicrosoftGraphService : IMicrosoftGraphService
                     });
                 }
 
-                // Handle pagination
                 var pageIterator = PageIterator<Event, EventCollectionResponse>
                     .CreatePageIterator(graphClient, result, (graphEvent) =>
                     {
@@ -183,12 +184,50 @@ public class MicrosoftGraphService : IMicrosoftGraphService
         }
         catch (Exception ex)
         {
-            // Log exception here
-            Console.WriteLine($"Error fetching events for user {userPrincipalName}: {ex.Message}");
+            _logger.LogError(ex, "Error fetching events for user {UserPrincipalName}", userPrincipalName);
             throw;
         }
 
         return events;
+    }
+
+    public async Task<bool> UserHasEventsAsync(string userPrincipalName)
+    {
+        var graphClient = GetGraphServiceClient();
+
+        try
+        {
+            _logger.LogDebug("Checking if user {UserPrincipalName} has events", userPrincipalName);
+
+            var result = await graphClient.Users[userPrincipalName].Calendar.Events
+                .GetAsync(requestConfiguration =>
+                {
+                    requestConfiguration.QueryParameters.Select = new[] { "id" };
+                    requestConfiguration.QueryParameters.Top = 1;
+                });
+
+            var hasEvents = result?.Value?.Count > 0;
+
+            _logger.LogDebug("User {UserPrincipalName} has events: {HasEvents}", userPrincipalName, hasEvents);
+
+            return hasEvents;
+        }
+        // ✅ CORREÇÃO: Use ex.ResponseStatusCode em vez de ex.StatusCode
+        catch (ServiceException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
+        {
+            _logger.LogDebug("User {UserPrincipalName} not found or has no calendar", userPrincipalName);
+            return false;
+        }
+        catch (ServiceException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.Forbidden)
+        {
+            _logger.LogWarning("No permission to access calendar for user {UserPrincipalName}", userPrincipalName);
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error checking events for user {UserPrincipalName}", userPrincipalName);
+            return false;
+        }
     }
 
     private DateTime GetDateTimeFromDateTimeTimeZone(Microsoft.Graph.Models.DateTimeTimeZone? dateTimeTimeZone)
@@ -196,7 +235,6 @@ public class MicrosoftGraphService : IMicrosoftGraphService
         if (dateTimeTimeZone == null)
             return DateTime.MinValue;
 
-        // Try to parse the DateTime string
         if (DateTime.TryParse(dateTimeTimeZone.DateTime, out DateTime result))
             return result;
 

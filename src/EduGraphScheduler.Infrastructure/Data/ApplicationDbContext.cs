@@ -29,7 +29,27 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(u => u.DisplayName)
                   .IsRequired()
-                  .HasMaxLength(100);
+                  .HasMaxLength(255);
+
+            entity.Property(u => u.MicrosoftGraphId)
+                  .IsRequired()
+                  .HasMaxLength(200);
+
+            entity.Property(u => u.UserPrincipalName)
+                  .IsRequired()
+                  .HasMaxLength(200);
+
+           entity.Property(u => u.GivenName)
+          .IsRequired()
+          .HasMaxLength(100); // 🔼 De 50 para 100
+
+            entity.Property(u => u.Surname)
+                  .IsRequired()
+                  .HasMaxLength(200); // 🔼 De 50 para 200
+
+            entity.Property(u => u.Mail)
+                  .IsRequired()
+                  .HasMaxLength(255); // 🔼 De 100 para 255
 
             entity.Property(u => u.MicrosoftGraphId)
                   .IsRequired()
@@ -63,13 +83,13 @@ public class ApplicationDbContext : DbContext
                   .HasMaxLength(200);
 
             entity.Property(e => e.OrganizerEmail)
-                  .HasMaxLength(100);
+                  .HasMaxLength(255);
 
             entity.Property(e => e.OrganizerName)
-                  .HasMaxLength(100);
+                  .HasMaxLength(255);
 
             entity.Property(e => e.Location)
-                  .HasMaxLength(100);
+                  .HasMaxLength(255);
 
             // Index for performance
             entity.HasIndex(e => e.UserId);

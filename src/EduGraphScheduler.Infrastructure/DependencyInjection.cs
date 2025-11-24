@@ -26,6 +26,7 @@ public static class DependencyInjection
 
         // Services
         services.AddScoped<IMicrosoftGraphService, MicrosoftGraphService>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         // Configure Settings
         services.Configure<MicrosoftGraphSettings>(configuration.GetSection("MicrosoftGraph"));
