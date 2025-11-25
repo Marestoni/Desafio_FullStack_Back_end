@@ -28,19 +28,16 @@ public class SyncController : ControllerBase
     public IActionResult StartSync()
     {
         _logger.LogInformation("Manual sync triggered");
-
-        // Enqueue immediate sync
         BackgroundJob.Enqueue<ISyncService>(x => x.SyncAllDataAsync());
 
         return Ok(new { message = "Sync job enqueued successfully" });
     }
 
     [HttpPost("schedule")]
-    public IActionResult ScheduleSync([FromQuery] string cronExpression = "0 */6 * * *") // Every 6 hours by default
+    public IActionResult ScheduleSync([FromQuery] string cronExpression = "0 */6 * * *")
     {
         _logger.LogInformation("Scheduling recurring sync with cron: {CronExpression}", cronExpression);
 
-        // Schedule recurring sync
         _recurringJobManager.AddOrUpdate<ISyncService>(
             "full-data-sync",
             x => x.SyncAllDataAsync(),

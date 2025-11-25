@@ -212,7 +212,6 @@ public class MicrosoftGraphService : IMicrosoftGraphService
 
             return hasEvents;
         }
-        // ✅ CORREÇÃO: Use ex.ResponseStatusCode em vez de ex.StatusCode
         catch (ServiceException ex) when (ex.ResponseStatusCode == (int)HttpStatusCode.NotFound)
         {
             _logger.LogDebug("User {UserPrincipalName} not found or has no calendar", userPrincipalName);

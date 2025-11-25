@@ -9,19 +9,15 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 
-// Add Infrastructure layer
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// Register Application Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICalendarEventService, CalendarEventService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISyncService, SyncService>();
 
-// Configure Hangfire
 builder.Services.AddHangfire(config =>
 {
     config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -46,7 +42,6 @@ builder.Services.AddHangfireServer(options =>
     options.Queues = new[] { "default", "sync" };
 });
 
-// Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddAuthentication(options =>
 {
@@ -67,10 +62,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Add Authorization
 builder.Services.AddAuthorization();
 
-// Add Swagger with JWT support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -101,7 +94,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -114,13 +106,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // Hangfire Dashboard (apenas em desenvolvimento)
     app.UseHangfireDashboard("/hangfire", new DashboardOptions
     {
         DashboardTitle = "EduGraph Scheduler Jobs",
@@ -135,8 +125,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-// ========== CONFIGURAÇÃO DOS JOBS RECORRENTES DO HANGFIRE ==========
 
 using (var scope = app.Services.CreateScope())
 {
@@ -161,22 +149,19 @@ using (var scope = app.Services.CreateScope())
             TimeZoneInfo.Local);
 #pragma warning restore CS0618 // O tipo ou membro é obsoleto
 
-        logger.LogInformation("✅ Jobs recorrentes do Hangfire configurados com sucesso");
-        logger.LogInformation("   🔄 Sync All Data: a cada 6 horas (0 */6 * * *)");
-        logger.LogInformation("   👥 Sync Users: a cada 3 horas (0 */3 * * *)");
+        logger.LogInformation(" jobs recorrentes do Hangfire configurados com sucesso");
+        logger.LogInformation(" Sync All Data: a cada 6 horas (0 */6 * * *)");
+        logger.LogInformation(" Sync Users: a cada 3 horas (0 */3 * * *)");
     }
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "❌ Erro ao configurar jobs recorrentes do Hangfire");
+        logger.LogError(ex, "Erro ao configurar jobs recorrentes do Hangfire");
     }
 }
 
-// ========== FIM DA CONFIGURAÇÃO DOS JOBS ==========
-
 app.Run();
 
-// Filtro de autorização para o dashboard do Hangfire
 public class HangfireAuthorizationFilter : Hangfire.Dashboard.IDashboardAuthorizationFilter
 {
     public bool Authorize(Hangfire.Dashboard.DashboardContext context)

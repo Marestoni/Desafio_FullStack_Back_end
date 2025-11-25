@@ -55,7 +55,6 @@ public class CalendarEventService : ICalendarEventService
 
         try
         {
-            // ✅ BUSCAR EVENTOS REAIS DO MICROSOFT GRAPH
             var graphEvents = await _microsoftGraphService.GetUserEventsAsync(user.UserPrincipalName);
 
             _logger.LogInformation("Retrieved {Count} events for user {UserPrincipalName}",
@@ -90,19 +89,18 @@ public class CalendarEventService : ICalendarEventService
 
     public async Task SyncAllUsersEventsAsync()
     {
-        _logger.LogInformation("🚀 Starting CACHED events sync");
+        _logger.LogInformation("Starting CACHED events sync");
 
         var allUsers = await _userRepository.GetAllAsync();
         var totalUsers = allUsers.Count();
 
-        // Filtra usuários que valem a pena verificar
         var usersToCheck = allUsers
             .Where(u => !string.IsNullOrEmpty(u.UserPrincipalName))
             .Where(u => !u.LastEventCheckAt.HasValue ||
-                       u.LastEventCheckAt.Value < DateTime.UtcNow.AddDays(-1)) // Verifica a cada dia
+                       u.LastEventCheckAt.Value < DateTime.UtcNow.AddDays(-1))
             .ToList();
 
-        _logger.LogInformation("🔍 Will check {ToCheck}/{Total} users for events", usersToCheck.Count, totalUsers);
+        _logger.LogInformation("Will check {ToCheck}/{Total} users for events", usersToCheck.Count, totalUsers);
 
         var usersWithEvents = 0;
         var processed = 0;
@@ -111,7 +109,6 @@ public class CalendarEventService : ICalendarEventService
         {
             try
             {
-                // Atualiza timestamp da verificação
                 user.LastEventCheckAt = DateTime.UtcNow;
 
                 var hasEvents = await _microsoftGraphService.UserHasEventsAsync(user.UserPrincipalName);
@@ -120,17 +117,16 @@ public class CalendarEventService : ICalendarEventService
                 {
                     usersWithEvents++;
 
-                    // ✅ CORREÇÃO: Passar o userId (Guid) em vez do UserPrincipalName
                     await SyncUserEventsAsync(user.Id);
 
-                    _logger.LogDebug("✅ Synced events for user {UserPrincipalName}", user.UserPrincipalName);
+                    _logger.LogDebug("Synced events for user {UserPrincipalName}", user.UserPrincipalName);
                 }
                 else
                 {
                     // Marca como sincronizado (sem eventos)
                     user.LastSyncedAt = DateTime.UtcNow;
                     user.EventCount = 0;
-                    _logger.LogDebug("⏭️ No events for user {UserPrincipalName}", user.UserPrincipalName);
+                    _logger.LogDebug("No events for user {UserPrincipalName}", user.UserPrincipalName);
                 }
 
                 await _userRepository.UpdateAsync(user);
@@ -139,7 +135,7 @@ public class CalendarEventService : ICalendarEventService
                 // Log a cada 100 usuários verificados (mais frequente para debug)
                 if (processed % 100 == 0)
                 {
-                    _logger.LogInformation("📊 Check progress: {Processed}/{Total} - {WithEvents} have events",
+                    _logger.LogInformation("Check progress: {Processed}/{Total} - {WithEvents} have events",
                         processed, usersToCheck.Count, usersWithEvents);
                 }
 
@@ -148,11 +144,11 @@ public class CalendarEventService : ICalendarEventService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Error checking user {UserPrincipalName}", user.UserPrincipalName);
+                _logger.LogError(ex, "Error checking user {UserPrincipalName}", user.UserPrincipalName);
             }
         }
 
-        _logger.LogInformation("✅ CACHED sync completed: {WithEvents} users have events out of {Checked} checked",
+        _logger.LogInformation("CACHED sync completed: {WithEvents} users have events out of {Checked} checked",
             usersWithEvents, processed);
     }
 

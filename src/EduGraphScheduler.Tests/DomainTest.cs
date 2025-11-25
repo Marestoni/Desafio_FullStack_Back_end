@@ -10,7 +10,6 @@ public class DomainTest
     [Fact]
     public void Can_Create_User_Entity()
     {
-        // Arrange & Act
         var user = new EduGraphUser
         {
             Id = Guid.NewGuid(),
@@ -21,7 +20,6 @@ public class DomainTest
             LastSyncedAt = DateTime.UtcNow
         };
 
-        // Assert
         user.Should().NotBeNull();
         user.Id.Should().NotBe(Guid.Empty);
         user.DisplayName.Should().Be("Test User");
@@ -31,7 +29,6 @@ public class DomainTest
     [Fact]
     public void Can_Create_CalendarEvent_Entity()
     {
-        // Arrange & Act
         var calendarEvent = new EduGraphCalendarEvent
         {
             Id = Guid.NewGuid(),
@@ -42,7 +39,6 @@ public class DomainTest
             UserId = Guid.NewGuid()
         };
 
-        // Assert
         calendarEvent.Should().NotBeNull();
         calendarEvent.Subject.Should().Be("Test Event");
         calendarEvent.Start.Should().BeBefore(calendarEvent.End);

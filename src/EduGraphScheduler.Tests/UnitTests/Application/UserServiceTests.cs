@@ -25,7 +25,6 @@ public class UserServiceTests
     [Fact]
     public async Task GetAllUsersAsync_Should_Return_UserDtos()
     {
-        // Arrange
         var testUser = TestDataGenerator.CreateTestUser();
         var testEvent = TestDataGenerator.CreateTestCalendarEvent(testUser.Id);
         testUser.CalendarEvents.Add(testEvent);
@@ -36,10 +35,8 @@ public class UserServiceTests
             .Setup(repo => repo.GetUsersWithEventsAsync())
             .ReturnsAsync(users);
 
-        // Act
         var result = await _userService.GetAllUsersAsync();
 
-        // Assert
         result.Should().NotBeNull();
         result.Should().HaveCount(1);
 
@@ -52,24 +49,20 @@ public class UserServiceTests
     [Fact]
     public async Task GetUserWithEventsAsync_Should_Return_Null_For_NonExistent_User()
     {
-        // Arrange
         var nonExistentUserId = Guid.NewGuid();
 
         _userRepositoryMock
             .Setup(repo => repo.GetUserWithEventsAsync(nonExistentUserId))
             .ReturnsAsync((User?)null);
 
-        // Act
         var result = await _userService.GetUserWithEventsAsync(nonExistentUserId);
 
-        // Assert
         result.Should().BeNull();
     }
 
     [Fact]
     public async Task SyncUsersFromMicrosoftGraphAsync_Should_Call_BulkUpsert()
     {
-        // Arrange
         var graphUsers = new List<MicrosoftGraphUser>
         {
             new() {
@@ -93,10 +86,8 @@ public class UserServiceTests
             .Setup(repo => repo.BulkUpsertAsync(It.IsAny<IEnumerable<User>>()))
             .Returns(Task.CompletedTask);
 
-        // Act
         await _userService.SyncUsersFromMicrosoftGraphAsync();
 
-        // Assert
         _userRepositoryMock.Verify(
             repo => repo.BulkUpsertAsync(It.IsAny<IEnumerable<User>>()),
             Times.Once);

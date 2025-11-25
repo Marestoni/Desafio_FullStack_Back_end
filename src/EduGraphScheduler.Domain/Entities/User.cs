@@ -45,6 +45,5 @@ public class User
     public int EventCount { get; set; }
     public DateTime? LastEventCheckAt { get; set; }
 
-    // Navigation property
     public virtual ICollection<CalendarEvent> CalendarEvents { get; set; } = new List<CalendarEvent>();
 }

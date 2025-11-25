@@ -14,21 +14,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        // Database Context
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-        // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
 
-        // Services
         services.AddScoped<IMicrosoftGraphService, MicrosoftGraphService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
-        // Configure Settings
         services.Configure<MicrosoftGraphSettings>(configuration.GetSection("MicrosoftGraph"));
         services.Configure<SyncSettings>(configuration.GetSection("SyncSettings"));
 

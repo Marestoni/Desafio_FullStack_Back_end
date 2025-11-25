@@ -16,7 +16,6 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // User configuration
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(u => u.Id);
@@ -41,15 +40,15 @@ public class ApplicationDbContext : DbContext
 
            entity.Property(u => u.GivenName)
           .IsRequired()
-          .HasMaxLength(100); // 🔼 De 50 para 100
+          .HasMaxLength(100);
 
             entity.Property(u => u.Surname)
                   .IsRequired()
-                  .HasMaxLength(200); // 🔼 De 50 para 200
+                  .HasMaxLength(200);
 
             entity.Property(u => u.Mail)
                   .IsRequired()
-                  .HasMaxLength(255); // 🔼 De 100 para 255
+                  .HasMaxLength(255);
 
             entity.Property(u => u.MicrosoftGraphId)
                   .IsRequired()
@@ -59,14 +58,12 @@ public class ApplicationDbContext : DbContext
                   .IsRequired()
                   .HasMaxLength(200);
 
-            // Relationship
             entity.HasMany(u => u.CalendarEvents)
                   .WithOne(e => e.User)
                   .HasForeignKey(e => e.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // CalendarEvent configuration
         modelBuilder.Entity<CalendarEvent>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -91,7 +88,6 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Location)
                   .HasMaxLength(255);
 
-            // Index for performance
             entity.HasIndex(e => e.UserId);
             entity.HasIndex(e => e.Start);
             entity.HasIndex(e => e.End);

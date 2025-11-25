@@ -49,14 +49,12 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         if (!userList.Any())
             return;
 
-        // Para poucos registros, use EF Core
         if (userList.Count <= 100)
         {
             await BulkUpsertEfCoreAsync(userList);
         }
         else
         {
-            // Para muitos registros, use MERGE SQL
             await BulkUpsertMergeAsync(userList);
         }
     }
@@ -69,7 +67,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
             if (existingUser != null)
             {
-                // Update existing user
                 existingUser.DisplayName = user.DisplayName;
                 existingUser.GivenName = user.GivenName;
                 existingUser.Surname = user.Surname;
@@ -83,7 +80,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             }
             else
             {
-                // Add new user
                 user.CreatedAt = DateTime.UtcNow;
                 await _context.Users.AddAsync(user);
             }
@@ -104,24 +100,17 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             if (connection.State != ConnectionState.Open)
                 await connection.OpenAsync();
 
-            // Criar DataTable
             var dataTable = CreateUserDataTable(users);
 
-            // Criar tabela temporária
             await CreateTempTableAsync(connection);
 
-            // Bulk copy para tabela temporária
             await BulkCopyToTempTableAsync(connection, dataTable);
 
-            // Executar MERGE
             await ExecuteMergeStatementAsync(connection);
 
-            // Limpar tabela temporária
-            //await DropTempTableAsync(connection);
         }
         catch (Exception ex)
         {
-            // Fallback para EF Core em caso de erro
             Console.WriteLine($"MERGE failed, falling back to EF Core: {ex.Message}");
             await BulkUpsertEfCoreAsync(users);
         }
@@ -136,7 +125,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         var table = new DataTable();
 
-        // Definir colunas (mesmo schema da tabela Users)
         table.Columns.Add("Id", typeof(Guid));
         table.Columns.Add("MicrosoftGraphId", typeof(string));
         table.Columns.Add("DisplayName", typeof(string));
@@ -151,7 +139,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         table.Columns.Add("CreatedAt", typeof(DateTime));
         table.Columns.Add("PasswordHash", typeof(string));
 
-        // Preencher dados
         foreach (var user in users)
         {
             table.Rows.Add(
@@ -202,10 +189,9 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         using var bulkCopy = new SqlBulkCopy(connection);
 
         bulkCopy.DestinationTableName = "#TempUsers";
-        bulkCopy.BatchSize = 5000; // Otimizado para grandes volumes
-        bulkCopy.BulkCopyTimeout = 120; // 2 minutos
+        bulkCopy.BatchSize = 5000;
+        bulkCopy.BulkCopyTimeout = 120;
 
-        // Mapear colunas
         bulkCopy.ColumnMappings.Add("Id", "Id");
         bulkCopy.ColumnMappings.Add("MicrosoftGraphId", "MicrosoftGraphId");
         bulkCopy.ColumnMappings.Add("DisplayName", "DisplayName");
@@ -225,7 +211,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     private async Task ExecuteMergeStatementAsync(SqlConnection connection)
     {
-        // 🔥 SOLUÇÃO COMPLETA: Criar temp table sem duplicatas desde o início
         var createCleanTempTableSql = @"
         DROP TABLE IF EXISTS #CleanTempUsers;
         
@@ -245,7 +230,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         await cleanupCommand.ExecuteNonQueryAsync();
         Console.WriteLine("✅ Created clean temp table without duplicates");
 
-        // 🔥 MERGE usando a temp table limpa
         var mergeSql = @"
         MERGE INTO Users AS Target
         USING #CleanTempUsers AS Source
@@ -283,7 +267,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             var affectedRows = await command.ExecuteNonQueryAsync();
             Console.WriteLine($"✅ MERGE completed successfully. Affected rows: {affectedRows}");
 
-            // Limpar temp tables
             await DropTempTableAsync(connection, "#TempUsers");
             await DropTempTableAsync(connection, "#CleanTempUsers");
         }
@@ -291,7 +274,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         {
             Console.WriteLine($"❌ MERGE failed: {ex.Message}");
 
-            // Debug detalhado
             await DebugDetailed(connection);
             throw;
         }
@@ -301,13 +283,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         Console.WriteLine("🔍 DETAILED DEBUG:");
 
-        // Verificar temp tables
         var checkTempSql = "SELECT COUNT(*) as Count FROM #TempUsers";
         using var tempCmd = new SqlCommand(checkTempSql, connection);
         var tempCount = await tempCmd.ExecuteScalarAsync();
         Console.WriteLine($"Temp table records: {tempCount}");
 
-        // Verificar duplicatas específicas
         var dupSql = @"
         SELECT MicrosoftGraphId, COUNT(*) as Count 
         FROM #TempUsers 
@@ -338,12 +318,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         }
     }
 
-    private async Task DropTempTableAsync(SqlConnection connection)
-    {
-        var dropSql = "DROP TABLE #TempUsers";
-        using var command = new SqlCommand(dropSql, connection);
-        await command.ExecuteNonQueryAsync();
-    }
 
     public async Task<IEnumerable<User>> GetUsersWhoHaveEventsAsync()
     {

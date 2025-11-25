@@ -17,13 +17,13 @@ public class SyncService : ISyncService
     IUserService userService,
     ICalendarEventService eventService,
     IUserRepository userRepository,
-    IMicrosoftGraphService microsoftGraphService, // ✅ ADICIONE ESTE PARÂMETRO
+    IMicrosoftGraphService microsoftGraphService,
     ILogger<SyncService> logger)
     {
         _userService = userService;
         _eventService = eventService;
         _userRepository = userRepository;
-        _microsoftGraphService = microsoftGraphService; // ✅ ADICIONE ESTA LINHA
+        _microsoftGraphService = microsoftGraphService;
         _logger = logger;
     }
 
@@ -33,10 +33,8 @@ public class SyncService : ISyncService
 
         try
         {
-            // 1. Sincronizar usuários do Graph
             await SyncUsersAsync();
 
-            // 2. Sincronizar eventos de cada usuário
             var users = await _userRepository.GetAllAsync();
 
             _logger.LogInformation("Starting events synchronization for {Count} users", users.Count());
@@ -51,7 +49,6 @@ public class SyncService : ISyncService
                 catch (Exception ex)
                 {
                     _logger.LogWarning(ex, "Failed to sync events for user: {UserPrincipalName}", user.UserPrincipalName);
-                    // Continua com os próximos usuários mesmo se um falhar
                 }
             }
 
@@ -70,7 +67,6 @@ public class SyncService : ISyncService
 
         try
         {
-            // ✅ BUSCAR USUÁRIOS REAIS DO MICROSOFT GRAPH
             var graphUsers = await _microsoftGraphService.GetUsersAsync();
 
             _logger.LogInformation("Retrieved {Count} users from Microsoft Graph", graphUsers.Count());
@@ -102,6 +98,6 @@ public class SyncService : ISyncService
 
     public async Task SyncUserEventsAsync(string userPrincipalName)
     {
-        await Task.CompletedTask; // Placeholder
+        await Task.CompletedTask;
     }
 }

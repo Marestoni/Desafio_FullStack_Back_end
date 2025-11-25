@@ -34,7 +34,6 @@ public class AuthService : IAuthService
     {
         _logger.LogInformation("Login attempt for user: {Username}", request.Username);
 
-        // Buscar usuário pelo username (UserPrincipalName)
         var user = await _userRepository.GetByMicrosoftGraphIdAsync(request.Username);
 
         if (user == null || string.IsNullOrEmpty(user.PasswordHash))
@@ -43,7 +42,6 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Credenciais inválidas");
         }
 
-        // Verificar senha
         if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
         {
             _logger.LogWarning("Login failed: Invalid password for user {Username}", request.Username);
@@ -74,17 +72,14 @@ public class AuthService : IAuthService
     {
         _logger.LogInformation("Registration attempt for user: {Username}", request.Username);
 
-        // Verificar se usuário já existe
         var existingUser = await _userRepository.GetByMicrosoftGraphIdAsync(request.Username);
         if (existingUser != null)
         {
             throw new ArgumentException("Usuário já existe");
         }
 
-        // Criar hash da senha
         var passwordHash = _passwordHasher.HashPassword(request.Password);
 
-        // Criar novo usuário
         var newUser = new User
         {
             Id = Guid.NewGuid(),
@@ -135,7 +130,7 @@ public class AuthService : IAuthService
             new Claim(JwtRegisteredClaimNames.Email, email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "User") // Role básica para todos os usuários
+            new Claim(ClaimTypes.Role, "User")
         };
 
         var token = new JwtSecurityToken(
@@ -151,7 +146,6 @@ public class AuthService : IAuthService
 
     private async Task<User> CreateOrGetMockUserAsync(string username)
     {
-        // Buscar usuário existente ou criar mock para demonstração
         var user = await _userRepository.GetByMicrosoftGraphIdAsync(username);
 
         if (user == null)

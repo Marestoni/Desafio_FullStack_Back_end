@@ -9,7 +9,6 @@ namespace EduGraphScheduler.Infrastructure.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            // 🔼 SUBIR UM NÍVEL para encontrar o appsettings.json do projeto API
             var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../EduGraphScheduler.API");
 
             var configuration = new ConfigurationBuilder()
@@ -24,7 +23,6 @@ namespace EduGraphScheduler.Infrastructure.Data
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                // Fallback para desenvolvimento
                 connectionString = "Server=(localdb)\\mssqllocaldb;Database=EduGraphScheduler;Trusted_Connection=true;MultipleActiveResultSets=true";
             }
 

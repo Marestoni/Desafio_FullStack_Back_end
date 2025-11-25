@@ -57,8 +57,7 @@ public class AuthController : ControllerBase
     [HttpPost("validate")]
     public IActionResult Validate()
     {
-        // Este endpoint é protegido por autenticação
-        // Se chegou aqui, o token é válido
+        
         var username = User.Identity?.Name;
         return Ok(new { message = $"Token válido para usuário: {username}" });
     }

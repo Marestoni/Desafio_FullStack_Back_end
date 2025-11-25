@@ -40,7 +40,6 @@ public class CalendarEventRepository : BaseRepository<CalendarEvent>, ICalendarE
 
             if (existingEvent != null)
             {
-                // Update existing event
                 existingEvent.Subject = calendarEvent.Subject;
                 existingEvent.BodyPreview = calendarEvent.BodyPreview;
                 existingEvent.Start = calendarEvent.Start;
@@ -55,7 +54,6 @@ public class CalendarEventRepository : BaseRepository<CalendarEvent>, ICalendarE
             }
             else
             {
-                // Add new event
                 await _context.CalendarEvents.AddAsync(calendarEvent);
             }
         }

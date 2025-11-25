@@ -38,7 +38,6 @@ public class CalendarEvent
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
 
-    // Foreign key
     public Guid UserId { get; set; }
     public virtual User User { get; set; } = null!;
 }
