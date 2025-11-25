@@ -256,6 +256,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "EduGraphScheduler.API.dll"]
+
 🔍 Monitoramento
 Hangfire Dashboard
 Acesse /hangfire para monitorar jobs em execução:
